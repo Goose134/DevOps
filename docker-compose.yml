@@ -1,0 +1,54 @@
+services:
+
+  # Серверная часть на Flask
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+
+    image: backend:2.0
+    container_name: backend-container
+
+    # Автоматический перезапуск контейнера
+    restart: unless-stopped
+
+    # Путь хранения данных
+    environment:
+      DATA_DIR: /app/storage
+
+    # Постоянное хранилище
+    volumes:
+      - backend_data:/app/storage
+
+    # Подключение к отдельной Docker-сети
+    networks:
+      - devops-network
+
+  # Клиентская часть на Nginx
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+
+    image: frontend:2.0
+    container_name: frontend-container
+
+    # Автоматический перезапуск контейнера
+    restart: unless-stopped
+
+    # Frontend зависит от backend
+    depends_on:
+      - backend
+
+    # Подключение к той же Docker-сети
+    networks:
+      - devops-network
+
+# Создаём отдельную сеть
+networks:
+  devops-network:
+    driver: bridge
+
+# Создаём постоянное хранилище
+volumes:
+  backend_data:
