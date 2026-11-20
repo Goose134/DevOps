@@ -1,0 +1,24 @@
+---
+- name: Fix Flask listening address
+  ansible.builtin.replace:
+    path: /opt/devops-lab/backend/app.py
+    regexp: 'host="127\.0\.0\.1"'
+    replace: 'host="0.0.0.0"'
+
+- name: Disable Flask debug mode
+  ansible.builtin.replace:
+    path: /opt/devops-lab/backend/app.py
+    regexp: 'debug=True'
+    replace: 'debug=False'
+
+- name: Fix frontend save URL
+  ansible.builtin.replace:
+    path: /opt/devops-lab/frontend/script.js
+    regexp: '"http://127\.0\.0\.1:5000/save"'
+    replace: '(window.location.protocol + "//" + window.location.hostname + ":5000/save")'
+
+- name: Fix frontend data URL
+  ansible.builtin.replace:
+    path: /opt/devops-lab/frontend/script.js
+    regexp: '"http://127\.0\.0\.1:5000/data"'
+    replace: '(window.location.protocol + "//" + window.location.hostname + ":5000/data")'

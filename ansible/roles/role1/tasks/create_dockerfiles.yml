@@ -1,0 +1,32 @@
+---
+- name: Create backend Dockerfile
+  ansible.builtin.copy:
+    dest: /opt/devops-lab/backend/Dockerfile
+    mode: '0644'
+    content: |
+      FROM python:3.12-slim
+
+      WORKDIR /app
+
+      COPY requirements.txt .
+
+      RUN pip install --no-cache-dir -r requirements.txt
+
+      COPY . .
+
+      EXPOSE 5000
+
+      CMD ["python", "app.py"]
+
+- name: Create frontend Dockerfile
+  ansible.builtin.copy:
+    dest: /opt/devops-lab/frontend/Dockerfile
+    mode: '0644'
+    content: |
+      FROM nginx:alpine
+
+      COPY index.html /usr/share/nginx/html/
+      COPY style.css /usr/share/nginx/html/
+      COPY script.js /usr/share/nginx/html/
+
+      EXPOSE 80

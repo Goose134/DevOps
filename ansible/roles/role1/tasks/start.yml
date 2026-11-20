@@ -1,0 +1,15 @@
+---
+- name: Validate Docker Compose configuration
+  ansible.builtin.command:
+    cmd: docker compose config --quiet
+    chdir: /opt/devops-lab/DevOps
+  changed_when: false
+
+- name: Build and start containers
+  community.docker.docker_compose_v2:
+    project_src: /opt/devops-lab/DevOps
+    files:
+      - docker-compose.yml
+      - docker-compose.override.yml
+    state: present
+    build: always

@@ -1,0 +1,7 @@
+---
+- name: Deploy DevOps application
+  hosts: app_servers
+  become: true
+
+  roles:
+    - role1

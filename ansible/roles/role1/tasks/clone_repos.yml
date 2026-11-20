@@ -1,0 +1,39 @@
+
+---
+- name: Create application directory
+  ansible.builtin.file:
+    path: /opt/devops-lab
+    state: directory
+    mode: '0755'
+
+- name: Clone backend repository version 2.0
+  ansible.builtin.git:
+    repo: https://github.com/Goose134/backend.git
+    dest: /opt/devops-lab/backend
+    version: v2.0
+    update: false
+
+- name: Clone frontend repository version 2.0
+  ansible.builtin.git:
+    repo: https://github.com/Goose134/frontend.git
+    dest: /opt/devops-lab/frontend
+    version: v2.0
+    update: false
+- name: Clone DevOps repository
+  ansible.builtin.git:
+    repo: https://github.com/Goose134/DevOps.git
+    dest: /opt/devops-lab/DevOps
+    version: main
+    update: false
+- name: Configure application ports
+  ansible.builtin.copy:
+    dest: /opt/devops-lab/DevOps/docker-compose.override.yml
+    mode: '0644'
+    content: |
+      services:
+        frontend:
+          ports:
+            - "8080:80"
+        backend:
+          ports:
+            - "5000:5000"

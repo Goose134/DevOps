@@ -1,0 +1,8 @@
+---
+- name: Stop application containers
+  community.docker.docker_compose_v2:
+    project_src: /opt/devops-lab/DevOps
+    files:
+      - docker-compose.yml
+      - docker-compose.override.yml
+    state: stopped

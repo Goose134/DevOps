@@ -1,0 +1,30 @@
+---
+- name: Install Docker
+  ansible.builtin.import_tasks: install_docker.yml
+  tags:
+    - deploy
+
+- name: Clone application repositories
+  ansible.builtin.import_tasks: clone_repos.yml
+  tags:
+    - deploy
+
+- name: Create Dockerfiles
+  ansible.builtin.import_tasks: create_dockerfiles.yml
+  tags:
+    - deploy
+
+- name: Fix frontend and backend connection
+  ansible.builtin.import_tasks: fix_connection.yml
+  tags:
+    - deploy
+
+- name: Start application
+  ansible.builtin.import_tasks: start.yml
+  tags:
+    - start
+
+- name: Stop application
+  ansible.builtin.import_tasks: stop.yml
+  tags:
+    - stop
